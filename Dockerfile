@@ -36,12 +36,10 @@ RUN install2.r --error --deps TRUE \
     && rm -rf /tmp/downloaded_packages/
 
 
-## Add BiocInstaller and graph which is needed for igraph
-RUN install2.r -r http://bioconductor.org/packages/3.5/bioc --deps TRUE \
-    Biobase \
-    CopywriteR \
-    Rsamtools \
-    && rm -rf /tmp/downloaded_packages/
+## Add biocLite to install Biobase
+RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("Biobase");'
+RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("CopywriteR");'
+RUN Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("Rsamtools");'
 
 ## Finally ready to install the R packages.  NOTE: failure to install a package doesn't throw an image build error.
 
