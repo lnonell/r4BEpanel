@@ -4,7 +4,7 @@
 # Version:          1
 # Software:         R
 # Description:      R and necessary packages for the analysis of the NGS hemato panel data 
-# Website:          NO https://github.com/isglobal-brge/nlOmicAssoc|https://hub.docker.com/r/lnonell/nlomicsassoc
+# Website:          https://github.com/isglobal-brge/r4bepanel|https://hub.docker.com/r/lnonell/r4BEpanel
 # Tags:             None, for the moment
 # Base Image:       R
 #################################################################
@@ -13,9 +13,15 @@
 FROM r-base:3.4.0
 
 ## Install the R packages, some of those are necessary for the bioconductor's packages.  NOTE: failure to install a package doesn't throw an image build error.
-RUN apt-get update && apt-get build-dep -y \
-    r-cran-xml 
-
+#xml needed by Rcompression
+#curl needed by RCurl
+RUN apt-get update && apt-get install -y \
+    r-cran-xml \
+    #curl \
+    libssl-dev \
+    libcurl4-openssl-dev 
+ 
+#Rcompression needed by RCurl
 RUN install2.r -r "http://www.omegahat.net/R" --deps TRUE \
     Rcompression \
     && rm -rf /tmp/downloaded_packages/
